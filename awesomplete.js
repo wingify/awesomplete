@@ -26,17 +26,23 @@ var _ = function (input, o) {
 		filter: _.FILTER_CONTAINS,
 		sort: _.SORT_BYLENGTH,
 		item: _.ITEM,
-		replace: _.REPLACE
+		replace: _.REPLACE,
+		shouldWrap: true
 	}, o);
 
 	this.index = -1;
 
 	// Create necessary elements
 
-	this.container = $.create("div", {
-		className: "awesomplete",
-		around: input
-	});
+	if (this.shouldWrap) {
+		this.container = $.create("div", {
+			className: "awesomplete",
+			around: input
+		});
+	} else {
+		this.container = input.parentNode;
+		this.container.classList.add('awesomplete');
+	}
 
 	this.ul = $.create("ul", {
 		hidden: "hidden",
