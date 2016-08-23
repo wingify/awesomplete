@@ -26,20 +26,27 @@ var _ = function (input, o) {
 		filter: _.FILTER_CONTAINS,
 		sort: _.SORT_BYLENGTH,
 		item: _.ITEM,
-		replace: _.REPLACE
+		replace: _.REPLACE,
+		shouldWrap: true
 	}, o);
 
 	this.index = -1;
 
 	// Create necessary elements
 
-	this.container = $.create("div", {
-		className: "awesomplete",
-		around: input
-	});
+	if (this.shouldWrap) {
+		this.container = $.create("div", {
+			className: "awesomplete",
+			around: input
+		});
+	} else {
+		this.container = input.parentNode;
+		this.container.classList.add('awesomplete');
+	}
 
 	this.ul = $.create("ul", {
 		hidden: "hidden",
+		className: 'dropdown__menu  dropdown__menu--typeahead  notranslate',
 		inside: this.container
 	});
 
@@ -185,12 +192,14 @@ _.prototype = {
 
 		if (this.selected) {
 			lis[this.index].setAttribute("aria-selected", "false");
+			lis[this.index].classList.remove('selected');
 		}
 
 		this.index = i;
 
 		if (i > -1 && lis.length > 0) {
 			lis[i].setAttribute("aria-selected", "true");
+			lis[i].classList.add('selected');
 			this.status.textContent = lis[i].textContent;
 
 			$.fire(this.input, "awesomplete-highlight", {
