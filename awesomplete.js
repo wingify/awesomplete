@@ -46,6 +46,7 @@ var _ = function (input, o) {
 
 	this.ul = $.create("ul", {
 		hidden: "hidden",
+		className: 'dropdown__menu  dropdown__menu--typeahead  notranslate',
 		inside: this.container
 	});
 
@@ -191,12 +192,14 @@ _.prototype = {
 
 		if (this.selected) {
 			lis[this.index].setAttribute("aria-selected", "false");
+			lis[this.index].classList.remove('selected');
 		}
 
 		this.index = i;
 
 		if (i > -1 && lis.length > 0) {
 			lis[i].setAttribute("aria-selected", "true");
+			lis[i].classList.add('selected');
 			this.status.textContent = lis[i].textContent;
 
 			$.fire(this.input, "awesomplete-highlight", {
